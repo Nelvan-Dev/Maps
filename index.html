@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Peta Interaktif Indonesia</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== ROUTE FINDER PANEL (always visible, left side) ===== -->
+  <aside id="route-panel">
+    <div class="panel-header">
+      <span class="panel-icon">🗺️</span>
+      <h2>Cari Rute</h2>
+    </div>
+
+    <div class="route-inputs">
+      <div class="input-group">
+        <label for="from-input">Dari</label>
+        <input id="from-input" type="text" placeholder="Nama lokasi asal..." autocomplete="off" />
+        <div id="from-suggestions" class="suggestions"></div>
+      </div>
+      <div class="input-group">
+        <label for="to-input">Ke</label>
+        <input id="to-input" type="text" placeholder="Nama lokasi tujuan..." autocomplete="off" />
+        <div id="to-suggestions" class="suggestions"></div>
+      </div>
+
+      <div class="sort-group">
+        <label>Urutkan berdasarkan:</label>
+        <div class="sort-buttons">
+          <button id="sort-time" class="sort-btn active" onclick="App.setSortMode('time')">⏱ Tercepat</button>
+          <button id="sort-cost" class="sort-btn" onclick="App.setSortMode('cost')">💰 Termurah</button>
+        </div>
+      </div>
+
+      <button id="search-btn" onclick="App.findRoutes()" disabled>Cari Rute</button>
+    </div>
+
+    <div id="route-results"></div>
+  </aside>
+
+  <!-- ===== MAP CONTAINER ===== -->
+  <main id="map-container">
+    <svg id="map-svg" xmlns="http://www.w3.org/2000/svg">
+      <!-- Indonesia map shape will be inlined -->
+      <g id="map-base">
+        <!-- SVG map loaded via JS -->
+      </g>
+      <!-- Connection lines layer -->
+      <g id="connections-layer"></g>
+      <!-- Pinpoints layer -->
+      <g id="pinpoints-layer"></g>
+    </svg>
+  </main>
+
+  <!-- ===== POPUP: Add Location ===== -->
+  <div id="add-popup" class="popup hidden">
+    <div class="popup-inner">
+      <h3>Tambah Lokasi</h3>
+      <input id="location-name-input" type="text" placeholder="Nama lokasi..." maxlength="40" />
+      <div class="popup-actions">
+        <button onclick="App.cancelAddLocation()">Batal</button>
+        <button class="primary" onclick="App.confirmAddLocation()">Tambah</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== POPUP: Connect Locations ===== -->
+  <div id="connect-popup" class="popup hidden">
+    <div class="popup-inner">
+      <h3>Hubungkan Lokasi</h3>
+      <p id="connect-desc"></p>
+      <div class="input-group">
+        <label>Jarak (km)</label>
+        <input id="connect-distance" type="number" min="1" placeholder="Contoh: 150" />
+      </div>
+      <div class="input-group">
+        <label>Mode Transportasi</label>
+        <select id="connect-transport">
+          <option value="train">🚂 Kereta Api</option>
+          <option value="bus">🚌 Bus</option>
+          <option value="plane">✈️ Pesawat</option>
+        </select>
+      </div>
+      <div class="popup-actions">
+        <button onclick="App.cancelConnect()">Batal</button>
+        <button class="primary" onclick="App.confirmConnect()">Hubungkan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TOAST ===== -->
+  <div id="toast"></div>
+
+  <!-- ===== HINT ===== -->
+  <div id="map-hint">
+    <span>💡 Double-click peta untuk menambah lokasi &nbsp;|&nbsp; CTRL+Scroll untuk zoom &nbsp;|&nbsp; Klik+drag untuk geser</span>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
